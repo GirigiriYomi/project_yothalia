@@ -27,6 +27,7 @@ def main(
 
         if sentence == 'exit()':
             go = False
+            continue
 
         dialogs: List[Dialog] = [
         [{"role": "user", "content": sentence}],
@@ -38,7 +39,7 @@ def main(
         top_p=top_p,
         )
 
-        print(f"{results['generation']['role'].capitalize()}:{result['generation']['content']}")
+        print(f"{results[0]['generation']['role'].capitalize()}:{results[0]['generation']['content']}")
 
     print("The end of program...")
 
