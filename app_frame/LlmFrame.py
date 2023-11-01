@@ -1,5 +1,5 @@
 from multiprocessing import Process, Lock, Queue
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, AutoModel
 from langchain.llms import HuggingFacePipeline
 from langchain import LLMChain
 from langchain.prompts import PromptTemplate
@@ -23,9 +23,9 @@ class LlmFrame:
         self.output_buffer = Queue(maxsize=10)
         
         
-        self.model = AutoModelForCausalLM.from_pretrained("./model_weights/baichuan-inc/Baichuan2-7B-Chat-4bits", load_in_4bit=True, trust_remote_code=True)
+        self.model = AutoModelForCausalLM.from_pretrained("./model_weights/baichuan-inc/Baichuan2-7B-Chat-4bits", load_in_4bit=True, trust_remote_code=True, ).cuda()
         self.tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan2-7B-Chat-4bits", use_fast=False, trust_remote_code=True)
-        self.model.to('cuda')
+
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.instruction = '你是一个打哑谜的助手'
         self.history = ''
