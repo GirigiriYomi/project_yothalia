@@ -1,3 +1,4 @@
+import multiprocessing as mp
 from multiprocessing import Process, Lock, Queue
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, AutoModel
 from langchain.llms import HuggingFacePipeline
@@ -16,12 +17,12 @@ class LlmFrame:
     """
 
     def __init__(self):
+        #mp.set_start_method('fork', force=True)
         print('Initializing Model...')
         start_time = time.time()
         self.process = Process(target=self.to_run, args=())
         self.message_buffer = Queue(maxsize=10)
         self.output_buffer = Queue(maxsize=10)
-        
         
         self.model = AutoModelForCausalLM.from_pretrained("./model_weights/baichuan-inc/Baichuan2-7B-Chat-4bits", load_in_4bit=True, trust_remote_code=True, ).cuda()
         self.tokenizer = AutoTokenizer.from_pretrained("baichuan-inc/Baichuan2-7B-Chat-4bits", use_fast=False, trust_remote_code=True)
@@ -40,7 +41,7 @@ class LlmFrame:
         return LLMChain(prompt=prompt, llm=hf)
 
 
-    def to_run(self):
+    def to_run(self,):
         #listening buffer
         while True:
 
