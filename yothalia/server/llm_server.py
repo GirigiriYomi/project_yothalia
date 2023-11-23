@@ -1,22 +1,26 @@
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, HTTPException, Request
 from llms import Baichuan2LLM
+from pydantic import BaseModel
+from protocol import LLMModel
 
-app = Flask(__name__)
+
+app = FastAPI()
 
 llm = Baichuan2LLM()
 
-@app.route('/generate', methods=['POST'])
-def generate_text():
-    data = request.json
-    print('input data:',data)
-    input_text = data.get('text', '')
 
-    response = llm.predict(input_text)
+@app.post("/generate")
+async def generate_text(input_data: LLMModel):
+    input_text = input_data.text
+    print('input data:', input_text)
 
-    print('response',response)
-    return jsonify({'response': response})
+    try:
+        response = llm.predict(input_text)
+        print('response', response)
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == '__main__':
-    
-
-    app.run(debug=False)
+    import uvicorn
+    uvicorn.run(app, host="localhost", port=8000, log_level="info")
