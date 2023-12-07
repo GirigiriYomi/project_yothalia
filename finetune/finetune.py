@@ -1,0 +1,96 @@
+import torch
+import transformers
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+
+from transformers import BitsAndBytesConfig
+from peft import LoraConfig, get_peft_model, PeftModel, PeftConfig
+
+import pandas as pd
+
+nf8_config = BitsAndBytesConfig(
+   load_in_8bit=True,
+   bnb_8bit_quant_type="nf8",
+   bnb_8bit_use_double_quant=True,
+   bnb_8bit_compute_dtype=torch.bfloat16
+)
+
+model = AutoModelForCausalLM.from_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune", 
+                                                load_in_4bit = True,
+                                                #peft_config=config,
+                                                trust_remote_code=True)
+
+tokenizer = AutoTokenizer.from_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune",
+                                            trust_remote_code=True)
+
+
+peft_model_id = "../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune-lora"
+config = PeftConfig.from_pretrained(peft_model_id)
+model = PeftModel.from_pretrained(model, peft_model_id)
+
+for name, param in model.named_parameters():
+    if 'lora' in name:
+        param.requires_grad = True
+
+model.print_trainable_parameters()
+
+df = pd.read_csv('../train_sample/csv/train.csv',index_col=0)
+df = df.map(lambda x: tokenizer(x, padding='max_length', truncation=True, max_length=512))
+df = df.sample(frac=1).reset_index(drop=True)
+
+df_test = df[-200:-1].reset_index(drop=True)
+df_train = df[:-200]
+
+
+training_args = TrainingArguments(
+
+    # Learning rate
+    learning_rate=1.0e-5,
+
+    # Number of training epochs
+    num_train_epochs=3,
+
+    # Max steps to train for (each step is a batch of data)
+    # Overrides num_train_epochs, if not -1
+    #max_steps=max_steps,
+
+    # Batch size for training
+    per_device_train_batch_size=4,
+
+    # Directory to save model checkpoints
+    output_dir='./ckp',
+
+    # Other arguments
+    overwrite_output_dir=False, # Overwrite the content of the output directory
+    disable_tqdm=False, # Disable progress bars
+    eval_steps=120, # Number of update steps between two evaluations
+    save_steps=120, # After # steps model is saved
+    warmup_steps=1, # Number of warmup steps for learning rate scheduler
+    per_device_eval_batch_size=4, # Batch size for evaluation
+    evaluation_strategy="steps",
+    logging_strategy="steps",
+    logging_steps=1,
+    optim="adamw_torch",
+    gradient_accumulation_steps = 4,
+    gradient_checkpointing=False,
+
+    # Parameters for early stopping
+    load_best_model_at_end=True,
+    save_total_limit=4,
+    greater_is_better=False,
+
+)
+data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+print('Parallel Status:',training_args.parallel_mode)
+
+
+from transformers import Trainer
+trainer = Trainer(
+    model,
+    training_args,
+    train_dataset=df_train,
+    eval_dataset=df_test,
+    data_collator=data_collator,
+)
+
+
+trainer.train()
