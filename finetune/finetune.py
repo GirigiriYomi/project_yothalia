@@ -47,7 +47,7 @@ for name, param in model.named_parameters():
 model.print_trainable_parameters()
 
 df = pd.read_csv('../train_sample/csv/train.csv',index_col=0)
-df = df.applymap(lambda x: tokenizer(x, padding='max_length', truncation=True, max_length=512)).reset_index(drop=True)
+df = df.applymap(lambda x: tokenizer(x, truncation=True)).reset_index(drop=True) # max length = 512 will let model not learn eos token
 df = df.sample(frac=1).reset_index(drop=True)
 
 df_test = df[-200:-1].reset_index(drop=True)
@@ -57,7 +57,7 @@ df_train = df[0:-200].reset_index(drop=True)
 training_args = TrainingArguments(
 
     # Learning rate
-    learning_rate=1.0e-5,
+    learning_rate=5.0e-5,
 
     # Number of training epochs
     num_train_epochs=3,
@@ -67,8 +67,8 @@ training_args = TrainingArguments(
     #max_steps=max_steps,
 
     # Batch size for training
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=4, # Batch size for evaluation
+    per_device_train_batch_size=1,
+    per_device_eval_batch_size=1, # Batch size for evaluation
 
     # Directory to save model checkpoints
     output_dir='./ckp',
@@ -76,8 +76,8 @@ training_args = TrainingArguments(
     # Other arguments
     overwrite_output_dir=False, # Overwrite the content of the output directory
     disable_tqdm=False, # Disable progress bars
-    eval_steps=300, # Number of update steps between two evaluations
-    save_steps=300, # After # steps model is saved
+    eval_steps=400, # Number of update steps between two evaluations
+    save_steps=400, # After # steps model is saved
     warmup_steps=1, # Number of warmup steps for learning rate scheduler
     
     evaluation_strategy="steps",
