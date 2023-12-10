@@ -26,11 +26,12 @@ config = LoraConfig(
 
 
 tokenizer = AutoTokenizer.from_pretrained("internlm/internlm-chat-7b", 
-                                          quantization_config=nf8_config,
+                                          
                                           trust_remote_code=True,
                                           cache_dir='../yothalia/server/model_weights/internlm/internlm-chat-7b')
 
 model = AutoModelForCausalLM.from_pretrained("internlm/internlm-chat-7b", 
+                                             quantization_config=nf8_config,
                                              torch_dtype=torch.float16, 
                                              trust_remote_code=True,
                                              cache_dir='../yothalia/server/model_weights/internlm/internlm-chat-7b')
@@ -50,5 +51,5 @@ model.save_pretrained('../yothalia/server/model_weights/internlm/internlm-chat-7
 model = get_peft_model(model, config)
 model.print_trainable_parameters()
 
-model.save_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune-lora")
+model.save_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune-lora", save_embedding_layers=True)
 

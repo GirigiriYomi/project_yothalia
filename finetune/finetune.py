@@ -1,11 +1,16 @@
 import torch
 import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from accelerate import Accelerator
 
 from transformers import BitsAndBytesConfig
-from peft import LoraConfig, get_peft_model, PeftModel, PeftConfig
+from peft import LoraConfig, get_peft_model, PeftModel, PeftConfig, prepare_model_for_kbit_training
 
 import pandas as pd
+
+###
+### torchrun --nproc_per_node 2 finetune.py
+###
 
 nf8_config = BitsAndBytesConfig(
    load_in_8bit=True,
@@ -13,11 +18,17 @@ nf8_config = BitsAndBytesConfig(
    bnb_8bit_use_double_quant=True,
    bnb_8bit_compute_dtype=torch.bfloat16
 )
+accelerator = Accelerator()
 
 model = AutoModelForCausalLM.from_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune", 
                                                 load_in_4bit = True,
                                                 #peft_config=config,
+                                                #device_map="auto",
                                                 trust_remote_code=True)
+                                                
+model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
+print(set(model.hf_device_map.values()))
+
 
 tokenizer = AutoTokenizer.from_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune",
                                             trust_remote_code=True)
@@ -27,6 +38,8 @@ peft_model_id = "../yothalia/server/model_weights/internlm/internlm-chat-7b-fine
 config = PeftConfig.from_pretrained(peft_model_id)
 model = PeftModel.from_pretrained(model, peft_model_id)
 
+model = accelerator.prepare(model)
+
 for name, param in model.named_parameters():
     if 'lora' in name:
         param.requires_grad = True
@@ -34,11 +47,11 @@ for name, param in model.named_parameters():
 model.print_trainable_parameters()
 
 df = pd.read_csv('../train_sample/csv/train.csv',index_col=0)
-df = df.map(lambda x: tokenizer(x, padding='max_length', truncation=True, max_length=512))
+df = df.applymap(lambda x: tokenizer(x, padding='max_length', truncation=True, max_length=512)).reset_index(drop=True)
 df = df.sample(frac=1).reset_index(drop=True)
 
 df_test = df[-200:-1].reset_index(drop=True)
-df_train = df[:-200]
+df_train = df[0:-200].reset_index(drop=True)
 
 
 training_args = TrainingArguments(
@@ -54,7 +67,8 @@ training_args = TrainingArguments(
     #max_steps=max_steps,
 
     # Batch size for training
-    per_device_train_batch_size=4,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=4, # Batch size for evaluation
 
     # Directory to save model checkpoints
     output_dir='./ckp',
@@ -62,10 +76,10 @@ training_args = TrainingArguments(
     # Other arguments
     overwrite_output_dir=False, # Overwrite the content of the output directory
     disable_tqdm=False, # Disable progress bars
-    eval_steps=120, # Number of update steps between two evaluations
-    save_steps=120, # After # steps model is saved
+    eval_steps=300, # Number of update steps between two evaluations
+    save_steps=300, # After # steps model is saved
     warmup_steps=1, # Number of warmup steps for learning rate scheduler
-    per_device_eval_batch_size=4, # Batch size for evaluation
+    
     evaluation_strategy="steps",
     logging_strategy="steps",
     logging_steps=1,
@@ -74,8 +88,8 @@ training_args = TrainingArguments(
     gradient_checkpointing=False,
 
     # Parameters for early stopping
-    load_best_model_at_end=True,
-    save_total_limit=4,
+    load_best_model_at_end=False, # set to true will blow up cuda mem
+    save_total_limit=8,
     greater_is_better=False,
 
 )
@@ -87,8 +101,8 @@ from transformers import Trainer
 trainer = Trainer(
     model,
     training_args,
-    train_dataset=df_train,
-    eval_dataset=df_test,
+    train_dataset=df_train['train'],
+    eval_dataset=df_test['train'],
     data_collator=data_collator,
 )
 
