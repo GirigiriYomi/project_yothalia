@@ -46,7 +46,7 @@ for name, param in model.named_parameters():
 
 model.print_trainable_parameters()
 
-df = pd.read_csv('../train_sample/csv/train.csv',index_col=0)
+df = pd.read_csv('../train_sample/csv/train_emoji_clean.csv',index_col=0) # use emoji free trainset
 df = df.applymap(lambda x: tokenizer(x, truncation=True)).reset_index(drop=True) # max length = 512 will let model not learn eos token
 df = df.sample(frac=1).reset_index(drop=True)
 
