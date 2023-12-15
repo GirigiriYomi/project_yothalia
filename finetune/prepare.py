@@ -53,3 +53,48 @@ model.print_trainable_parameters()
 
 model.save_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-7b-finetune-lora", save_embedding_layers=True)
 
+
+###############################################################
+
+
+
+config = LoraConfig(
+        r=8,
+        lora_alpha=32,
+        lora_dropout=0.03,
+        target_modules=["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj","lm_head"],
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
+
+
+
+
+tokenizer = AutoTokenizer.from_pretrained("internlm/internlm-chat-20b-4bit", 
+                                          
+                                          trust_remote_code=True,
+                                          cache_dir='../yothalia/server/model_weights/internlm/internlm-chat-20b-int4')
+
+model = AutoModelForCausalLM.from_pretrained("internlm/internlm-chat-20b-4bit", 
+                                             load_in_4bit=True,
+                                             trust_remote_code=True,
+                                             cache_dir='../yothalia/server/model_weights/internlm/internlm-chat-20b-int4')
+
+
+special_tokens_dict = {'additional_special_tokens': 
+                       ['<<SYS>>','<</SYS>>','[INST]','[/INST]']}
+num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
+model.resize_token_embeddings(len(tokenizer))
+
+
+tokenizer.save_pretrained('../yothalia/server/model_weights/internlm/internlm-chat-20b-int4-finetune')
+
+model.save_pretrained('../yothalia/server/model_weights/internlm/internlm-chat-20b-int4-finetune')
+
+
+model = get_peft_model(model, config)
+model.print_trainable_parameters()
+
+model.save_pretrained("../yothalia/server/model_weights/internlm/internlm-chat-20b-int4-finetune-lora", save_embedding_layers=True)
+
+

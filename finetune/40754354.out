@@ -1,0 +1,145 @@
+[2023-12-11 10:04:24,365] torch.distributed.run: [WARNING] 
+[2023-12-11 10:04:24,365] torch.distributed.run: [WARNING] *****************************************
+[2023-12-11 10:04:24,365] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2023-12-11 10:04:24,365] torch.distributed.run: [WARNING] *****************************************
+Detected kernel version 4.18.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:40<00:40, 40.81s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:40<00:40, 40.82s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:40<00:40, 40.82s/it]Loading checkpoint shards:  50%|█████     | 1/2 [00:40<00:40, 40.82s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 29.55s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 29.55s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.24s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.24s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 29.56s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.24s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 29.56s/it]Loading checkpoint shards: 100%|██████████| 2/2 [01:02<00:00, 31.25s/it]
+{2}{3}
+
+{1}{0}
+
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+trainable params: 41,693,248 || all params: 7,363,674,176 || trainable%: 0.5662016950164418
+trainable params: 41,693,248 || all params: 7,363,674,176 || trainable%: 0.5662016950164418
+trainable params: 41,693,248 || all params: 7,363,674,176 || trainable%: 0.5662016950164418
+trainable params: 41,693,248 || all params: 7,363,674,176 || trainable%: 0.5662016950164418
+Parallel Status:Parallel Status:  ParallelMode.DISTRIBUTEDParallel Status:ParallelMode.DISTRIBUTED
+
+ Parallel Status:ParallelMode.DISTRIBUTED
+ ParallelMode.DISTRIBUTED
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3653, in get_loc
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3653, in get_loc
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3653, in get_loc
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3653, in get_loc
+            return self._engine.get_loc(casted_key)    return self._engine.get_loc(casted_key)return self._engine.get_loc(casted_key)
+return self._engine.get_loc(casted_key)
+
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyErrorKeyErrorKeyError: : KeyError: 'train''train': 'train'
+
+'train'
+
+The above exception was the direct cause of the following exception:
+
+
+The above exception was the direct cause of the following exception:
+
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+Traceback (most recent call last):
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "finetune.py", line 104, in <module>
+  File "finetune.py", line 104, in <module>
+Traceback (most recent call last):
+  File "finetune.py", line 104, in <module>
+  File "finetune.py", line 104, in <module>
+        train_dataset=df_train['train'],train_dataset=df_train['train'],
+
+      File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+      File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+train_dataset=df_train['train'],train_dataset=df_train['train'],
+
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+      File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3655, in get_loc
+    indexer = self.columns.get_loc(key)indexer = self.columns.get_loc(key)    
+
+indexer = self.columns.get_loc(key)  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3655, in get_loc
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3655, in get_loc
+
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/pandas/core/indexes/base.py", line 3655, in get_loc
+    raise KeyError(key) from err
+KeyError: 'train'
+    raise KeyError(key) from err    
+raise KeyError(key) from err    KeyError
+raise KeyError(key) from err: KeyError
+'train': KeyError
+'train': 
+'train'
+[2023-12-11 10:06:39,569] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 1645144 closing signal SIGTERM
+[2023-12-11 10:06:39,886] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 1645142) of binary: /scratch/jd5226/hpml/bin/python3.8
+Traceback (most recent call last):
+  File "/scratch/jd5226/hpml/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/scratch/jd5226/hpml/lib/python3.8/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+finetune.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2023-12-11_10:06:39
+  host      : gr017.hpc.nyu.edu
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 1645143)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2023-12-11_10:06:39
+  host      : gr017.hpc.nyu.edu
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 1645145)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2023-12-11_10:06:39
+  host      : gr017.hpc.nyu.edu
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1645142)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
