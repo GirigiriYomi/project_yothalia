@@ -8,6 +8,8 @@ llama_core/llama-2-7b-chat/
 app_frame/model_weights/
 model_weights/
 tokenizers/
+ckp/
+.env
 
 
 
