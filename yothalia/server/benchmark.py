@@ -61,7 +61,7 @@ def evaluate(args, files):
             predict_choice = result_postprocessing(result)
             if predict_choice == int(correct_choice[0]):
                 count_correct += 1
-            break
+                
         acc = count_correct / count_total
         accs.append(acc)
     return accs
