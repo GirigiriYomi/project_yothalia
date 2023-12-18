@@ -9,6 +9,7 @@ app_frame/model_weights/
 model_weights/
 tokenizers/
 ckp/
+.env
 
 
 

@@ -116,7 +116,6 @@ class RoleplayDataloader(DataLoader):
 # Example usage
 def parse():
     parser = ArgumentParser()
-    parser.add_argument('--model', default='Resnet_BS', help=['model architecture for bone suppression'])
     parser.add_argument('--batch_size', default=1, help='batch size')
     parser.add_argument('--path', default='../../train_sample/csv/', help='optimizer for training')
     args = parser.parse_args()
