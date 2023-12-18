@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 from dotenv import load_dotenv
 from dataset import RoleplayDataloader
+from llama import llama_request
 
 # Set your OpenAI API key
 load_dotenv()
@@ -54,14 +55,14 @@ def evaluate(args, files):
         count_correct = 0
         for batch in bm_dataloader:
             idx, prompt, correct_choice, correct_assisstant = batch
-            
+
             # TODO PLACE TO CHANGE WITH OUR MODEL
-            result = openai_request(prompt[0])
+            result = llama_request(prompt[0])
 
             predict_choice = result_postprocessing(result)
             if predict_choice == int(correct_choice[0]):
                 count_correct += 1
-            break
+                
         acc = count_correct / count_total
         accs.append(acc)
     return accs
@@ -97,7 +98,7 @@ def plot_accuracy(files, accs):
     plt.ylabel('Accuracy')
     plt.title('Accuracy for Each File')
     plt.ylim([0, 1])  # Set the y-axis range from 0 to 1
-    plt.show()
+    plt.savefig('acc.png')
 
 
 def parse():
@@ -112,7 +113,7 @@ if __name__ == '__main__':
     args = parse()
 
     # evaluate with specific csv file
-    files = ['eng_roleplay.csv', 'eng_roleplay2.csv', 'zh_roleplay.csv']
+    files = ['eng_roleplay.csv']
     accs = evaluate(args, files)
     print(accs)
 
