@@ -62,7 +62,7 @@ def evaluate(args, files):
             predict_choice = result_postprocessing(result)
             if predict_choice == int(correct_choice[0]):
                 count_correct += 1
-                
+            break
         acc = count_correct / count_total
         accs.append(acc)
     return accs
@@ -115,7 +115,7 @@ if __name__ == '__main__':
     # evaluate with specific csv file
     files = ['eng_roleplay.csv']
     accs = evaluate(args, files)
-    print(accs)
+    print('accs:', accs)
 
     # plot bar graph of acc
     plot_accuracy(files, accs)
