@@ -63,9 +63,30 @@ We provide two ways to execute our code, local environment and HPC cluster
 - **Finetune:** 
   - Local environment:
   ```bash
+  conda activate /env/you/create/
+  pip install requirements.txt
+  pip install ipykernel
+  python -m ipykernel install --user --name myenv
+  # start jupyter notebook finetune/finetune_test to have test script run
   ```
   - HPC cluster:
   ```bash
+  #!/bin/bash
+  #SBATCH --nodes=1
+  #SBATCH --cpus-per-task=4
+  #SBATCH --time=2-00:00:00
+  #SBATCH --mem=64GB
+  #SBATCH --gres=gpu:4
+  #SBATCH --job-name=hpml_4_finetune
+  #SBATCH --output=%j.out
+  
+  module purge
+  module load anaconda3/2020.07
+  module load openmpi/intel/4.1.1 
+  
+  source activate /scratch/jd5226/hpml
+  
+  torchrun --nproc_per_node 4 finetune.py
   ```
 - **Evaluate:**
   - Place your own access token(we also provide gpt3.5 turbo for comparison) 
