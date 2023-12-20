@@ -14,7 +14,7 @@ The project aimed to explore the interaction between humans and chatbots, provid
 
 ### Roleplay LLM Chat Model
 
-The team explored the methods of prompt engineering, fine-tuning, and a combination of both to make the LLM play as a specific character, such as some famous character." The description below will also mainly focus on this part of project
+The team explored the methods of prompt engineering, fine-tuning, and a combination of both to make the LLM play as a specific character, such as some famous character. The description below will also mainly focus on this part of project
 
 ## Project Milestones and Completion Status
 
@@ -43,6 +43,7 @@ The team explored the methods of prompt engineering, fine-tuning, and a combinat
   - Converted the problem into multiple-choice questions for evaluation.
   - Randomly chose four outputs from data, combined with correct instructions, inputs, and outputs.
   - Calculated the accuracy of each model.
+  ![Performance](/yothalia/server/bm_dataformat.png)
 
 - **Results and Observations**
   - 128 tokens demonstrated the best performance.
