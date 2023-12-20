@@ -4,7 +4,7 @@ import transformers
 from transformers import LlamaForCausalLM, LlamaTokenizer
 
 access_token = 'YOUR_OWN_HUGGIN_FACE_TOKEN'
-model_dir = "meta-llama/Llama-2-7b-chat-hf"
+model_dir = "meta-llama/Llama-2-7b-chat-hf" # or finetuned model path
 model = LlamaForCausalLM.from_pretrained(model_dir, token=access_token)
 tokenizer = LlamaTokenizer.from_pretrained(model_dir, token=access_token)
 

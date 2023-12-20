@@ -3,6 +3,7 @@ import openai
 import random
 import re
 import numpy as np
+import time
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 from dotenv import load_dotenv
@@ -51,18 +52,34 @@ def evaluate(args, files):
     # evaluate all files
     for file in files:
         bm_dataloader = role_play_dataloader.get_bm_dataloader(file)
-        count_total = len(bm_dataloader.dataset)
+        count_total = 0
         count_correct = 0
+        loader_start = time.perf_counter()
         for batch in bm_dataloader:
             idx, prompt, correct_choice, correct_assisstant = batch
+            loader_time = time.perf_counter() - loader_start
 
             # TODO PLACE TO CHANGE WITH OUR MODEL
-            result = llama_request(prompt[0])
+            pipeline_start = time.perf_counter()
+            result = openai_request(prompt[0])
+            pipeline_time = time.perf_counter() - pipeline_start            
 
             predict_choice = result_postprocessing(result)
             if predict_choice == int(correct_choice[0]):
                 count_correct += 1
-            break
+            count_total += 1
+
+            if count_total % 10 == 0:
+                print(f'Iteration: {count_total}', count_correct / count_total)
+                print(result)
+
+                print('Time of running model:')
+                print('Pipeline:', pipeline_time)
+                # print('Generate:', generate_time)
+                print('Loader:', loader_time)
+
+            loader_start = time.perf_counter()
+                
         acc = count_correct / count_total
         accs.append(acc)
     return accs
@@ -97,8 +114,14 @@ def plot_accuracy(files, accs):
     plt.xlabel('File')
     plt.ylabel('Accuracy')
     plt.title('Accuracy for Each File')
+
+    # Add labels to each bar
+    for i, (file, acc) in enumerate(zip(files, accs)):
+        plt.text(i, acc + 0.02, f'{acc:.2f}', ha='center', va='bottom')
+
     plt.ylim([0, 1])  # Set the y-axis range from 0 to 1
     plt.savefig('acc.png')
+    plt.show()  # Display the plot
 
 
 def parse():
@@ -111,11 +134,13 @@ def parse():
 if __name__ == '__main__':
     random.seed(328)
     args = parse()
+    print('loading file...')
 
     # evaluate with specific csv file
-    files = ['eng_roleplay.csv']
+    files = ['eng_roleplay.csv', 'eng_roleplay2.csv', 'zh_roleplay.csv']
+    print('start evaluating...')
     accs = evaluate(args, files)
-    print('accs:', accs)
+    print(accs)
 
     # plot bar graph of acc
     plot_accuracy(files, accs)
