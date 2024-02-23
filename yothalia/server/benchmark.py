@@ -3,10 +3,18 @@ import openai
 import random
 import re
 import numpy as np
+<<<<<<< HEAD
+=======
+import time
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 from dotenv import load_dotenv
 from dataset import RoleplayDataloader
+<<<<<<< HEAD
+=======
+from llama import llama_request
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
 
 # Set your OpenAI API key
 load_dotenv()
@@ -50,6 +58,7 @@ def evaluate(args, files):
     # evaluate all files
     for file in files:
         bm_dataloader = role_play_dataloader.get_bm_dataloader(file)
+<<<<<<< HEAD
         count_total = len(bm_dataloader.dataset)
         count_correct = 0
         for batch in bm_dataloader:
@@ -57,10 +66,38 @@ def evaluate(args, files):
             
             # TODO PLACE TO CHANGE WITH OUR MODEL
             result = openai_request(prompt[0])
+=======
+        count_total = 0
+        count_correct = 0
+        loader_start = time.perf_counter()
+        for batch in bm_dataloader:
+            idx, prompt, correct_choice, correct_assisstant = batch
+            loader_time = time.perf_counter() - loader_start
+
+            # TODO PLACE TO CHANGE WITH OUR MODEL
+            pipeline_start = time.perf_counter()
+            result = openai_request(prompt[0])
+            pipeline_time = time.perf_counter() - pipeline_start            
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
 
             predict_choice = result_postprocessing(result)
             if predict_choice == int(correct_choice[0]):
                 count_correct += 1
+<<<<<<< HEAD
+=======
+            count_total += 1
+
+            if count_total % 10 == 0:
+                print(f'Iteration: {count_total}', count_correct / count_total)
+                print(result)
+
+                print('Time of running model:')
+                print('Pipeline:', pipeline_time)
+                # print('Generate:', generate_time)
+                print('Loader:', loader_time)
+
+            loader_start = time.perf_counter()
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
                 
         acc = count_correct / count_total
         accs.append(acc)
@@ -96,8 +133,19 @@ def plot_accuracy(files, accs):
     plt.xlabel('File')
     plt.ylabel('Accuracy')
     plt.title('Accuracy for Each File')
+<<<<<<< HEAD
     plt.ylim([0, 1])  # Set the y-axis range from 0 to 1
     plt.show()
+=======
+
+    # Add labels to each bar
+    for i, (file, acc) in enumerate(zip(files, accs)):
+        plt.text(i, acc + 0.02, f'{acc:.2f}', ha='center', va='bottom')
+
+    plt.ylim([0, 1])  # Set the y-axis range from 0 to 1
+    plt.savefig('acc.png')
+    plt.show()  # Display the plot
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
 
 
 def parse():
@@ -110,11 +158,23 @@ def parse():
 if __name__ == '__main__':
     random.seed(328)
     args = parse()
+<<<<<<< HEAD
 
     # evaluate with specific csv file
     files = ['eng_roleplay.csv', 'eng_roleplay2.csv', 'zh_roleplay.csv']
+=======
+    print('loading file...')
+
+    # evaluate with specific csv file
+    files = ['eng_roleplay.csv', 'eng_roleplay2.csv', 'zh_roleplay.csv']
+    print('start evaluating...')
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
     accs = evaluate(args, files)
     print(accs)
 
     # plot bar graph of acc
+<<<<<<< HEAD
     plot_accuracy(files, accs)
+=======
+    plot_accuracy(files, accs)
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c

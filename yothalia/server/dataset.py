@@ -33,6 +33,7 @@ class BenchmarkDataset(Dataset):
         correct_assisstant = sample['assisstant']
 
         # Get 4 random outputs
+<<<<<<< HEAD
         potential_assisstant = []
         random_idx = random.sample(range(self.num_sample), 4)
         potential_assisstant = [self.data[idx]['assisstant'] for idx in random_idx]
@@ -53,6 +54,34 @@ class BenchmarkDataset(Dataset):
                 f"Response:\n"
         for i in range(len(potential_assisstant)):
             prompt += f"No.{i}: {potential_assisstant[i]}\n"
+=======
+        potential_assistant = []
+        random_idx = random.sample(range(self.num_sample), 4)
+        potential_assistant = [self.data[idx]['assisstant'] for idx in random_idx]
+
+        # Insert the correct output at a random position (Also the correct answer position)
+        correct_position = random.randint(0, 4)
+        potential_assistant.insert(correct_position, correct_assisstant)
+
+        # Get prompt 
+        prompt = self.get_prompt(instruction, user, potential_assistant)
+
+        return idx, prompt, correct_position, correct_assisstant
+    
+    def get_prompt(self, instruction, user, potential_assistant):
+        prompt = (
+            f'<s>[INST]<<SYS>>\n'
+            f'Please select the best response with the given instruction and input. Return with its No. number of response.<</SYS>>\n'
+            f"Instruction: {instruction}.\n"
+            f'Input: {user}.\n'
+            f'Response:\n'
+        )
+        
+        for i, response in enumerate(potential_assistant):
+            prompt += f'No.{i}: {response}\n'
+        
+        prompt += '[/INST]'
+>>>>>>> af62db0a29e643b7ac49832aadaf6338af0b9c6c
         return prompt
     
 
