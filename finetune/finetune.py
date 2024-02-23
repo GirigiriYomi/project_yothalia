@@ -53,14 +53,16 @@ df = df.sample(frac=1).reset_index(drop=True)
 df_test = df[-200:-1].reset_index(drop=True)
 df_train = df[0:-200].reset_index(drop=True)
 
+print(df_train.head())
+
 
 training_args = TrainingArguments(
 
     # Learning rate
-    learning_rate=5.0e-5,
+    learning_rate=1.0e-5,
 
     # Number of training epochs
-    num_train_epochs=3,
+    num_train_epochs=1,
 
     # Max steps to train for (each step is a batch of data)
     # Overrides num_train_epochs, if not -1
