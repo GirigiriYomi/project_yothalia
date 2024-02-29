@@ -24,8 +24,9 @@ class Whisper(ASR_interface):
         return transcription[0]
     
     
-    def input(text):
-        pass
+    def input(self, voice):
+        text = self.transcribe_audio(voice)
+        return text
     
     
 

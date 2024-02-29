@@ -1,0 +1,13 @@
+{
+    "bilibili_danmu":{
+        "SESSDATA":"ef938036%2C1711341777%2Ce3a5e%2A91CjCOlthcg5J1xAaJFMWyDaxa9A7_NMv2WioEPFs-kasnr3LiBxCVLkhaY324w8rHpBgSVlVrTEJBU3VCMVFwbE53ZXJJTE5KSXZTOFp5NmdCeWhoZmpPQ29fb000aGp5ZklXZmJibmxpRXF2MDNoYzdrelI3Mlhja0wtNXlPT2c3OWtUSmJLUUlBIIEC",
+        "BILI_JCT":"d2f234d238569af32b5311ce08aef8ee",
+        "BUVID3":"C44F8A4A-329E-8AEE-B382-30CCA175B7DD95600infoc",
+        "ROOM_ID":"31684324"
+    },
+    
+    "protocol_config":{
+        "ip":"localhost",
+        "port":"24600"
+    }
+}
